@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "132476163608",
+    "firebase_url": "https://deloittehackathon-489ec.firebaseio.com",
+    "project_id": "deloittehackathon-489ec",
+    "storage_bucket": "deloittehackathon-489ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132476163608:android:1133cb82a1826e492e956d",
+        "android_client_info": {
+          "package_name": "com.example.deloittescanimage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132476163608-v5flv64o5dl8t5hm30lns57pe2o7nigl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyFEW-FcUh1Gk-PzeFvhcTJUNimsrY_9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132476163608-v5flv64o5dl8t5hm30lns57pe2o7nigl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

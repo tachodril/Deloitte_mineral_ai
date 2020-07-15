@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DeloitteScanImage</string>
+    <string name="temp_text_23">Thanks to a wide variety of open-source libraries, it is relatively easy nowadays to start exploring datasets and making some first predictions using simple Machine Learning (ML) algorithms in Python. Although, to make these trained models useful in the real world, it is necessary to share them and make them easily accessible on other users machines to make predictions. Only in this way Machine Learning can be used to provide benefit to society.</string>
+</resources>
