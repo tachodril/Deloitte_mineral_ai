@@ -27,6 +27,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,9 +47,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
     private StorageTask uploadTask;
     private String imageUrl;
     private ProgressDialog progressDialog;
+    private String curClass="-1";
+    private String confidence="-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +147,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
-                            imageUrl=downloadUri.toString();
+                            imageUrl = downloadUri.toString();
                             Log.e("then: ", imageUrl);
-                            progressDialog.dismiss();
+                            fetchFromApi();
+                            //progressDialog.dismiss();
                         } else {
                             // Handle failures
                             // ...
@@ -157,6 +178,88 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+//    private void fetchFromApi(){
+//        JsonObject json = new JsonObject();
+//        json.addProperty("url", imageUrl);
+//
+//        Ion.with(MainActivity.this)
+//                .load("https://bp7vd1oa4m.execute-api.us-east-1.amazonaws.com/Prod/invocations/")
+//                .setJsonObjectBody(json)
+//                .asJsonObject()
+//                .setCallback(new FutureCallback<JsonObject>() {
+//                    @Override
+//                    public void onCompleted(Exception e, JsonObject result) {
+//                        // do stuff with the result or error
+//                        if(e!=null)
+//                        Log.e("onCompleted: error",e.toString());
+//                        if(result!=null)
+//                        Log.e("onCompleted: result",result.toString());
+//                    }
+//                });
+//    }
+
+    private void fetchFromApi() {
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            String URL = "https://bp7vd1oa4m.execute-api.us-east-1.amazonaws.com/Prod/invocations/";
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("url", imageUrl);
+            final String requestBody = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.i("VOLLEY response", response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("VOLLEY error", error.toString());
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+                        responseString = String.valueOf(response.statusCode);
+                        // can get more details such as response.headers
+                        //Log.e("parseNetworkResponse: ",response.toString());
+
+                        try {
+                            String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+                            Log.e("NetworkResponse_new1",json);
+                            JSONObject obj=new JSONObject(json);
+                            Log.e("NetworkResponse_2",obj.toString());
+                        } catch (UnsupportedEncodingException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        progressDialog.dismiss();
     }
 
     private void init() {
