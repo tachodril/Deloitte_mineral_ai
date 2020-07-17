@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/first_layer"
-        app:cardElevation="40dp"
+        app:cardElevation="80dp"
         android:layout_width="match_parent"
         android:layout_height="60dp">
         <RelativeLayout
@@ -139,7 +139,9 @@
             <ImageView
                 android:id="@+id/show_image"
                 android:layout_width="200dp"
+                android:alpha="0.05"
                 android:layout_height="200dp"
+                android:src="@drawable/ic_baseline_photo_24"
                 android:layout_below="@+id/second_layer"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="18dp"/>
@@ -245,11 +247,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/show_image"
-                android:padding="12dp"
+                android:paddingLeft="12dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
                 android:fontFamily="@font/opensans"
                 tools:text="@string/temp_text_23"
                 android:textColor="#000"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/know_more_link"
+                android:layout_below="@+id/description"
+                android:textSize="15sp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone"
+                android:fontFamily="@font/notosans"
+                android:textStyle="italic"
+                android:textColor="#0099cc"
+                android:text="To know more, click here."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
     </ScrollView>
 

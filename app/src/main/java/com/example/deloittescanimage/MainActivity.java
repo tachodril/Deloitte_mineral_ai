@@ -3,18 +3,21 @@ package com.example.deloittescanimage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -65,7 +68,7 @@ import java.io.UnsupportedEncodingException;
 public class MainActivity extends AppCompatActivity {
 
     private TextView instructions, sendButton, addUrlText, classText,
-            status, confidenceScore, description;
+            status, confidenceScore, description, knowMoreLink;
     private CardView addPhoto;
     private ImageView imageView, addUrlImg;
 
@@ -100,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void receiveClicks() {
 
+        knowMoreLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openKnowMoreLink();
+            }
+        });
+
         addUrlText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Add a image first", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                classText.setText("");
+                confidenceScore.setText("");
+                status.setText("");
+                knowMoreLink.setVisibility(View.GONE);
 
                 progressDialog.show();
                 Long l = System.currentTimeMillis() / 1000;
@@ -186,6 +201,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void openKnowMoreLink() {
+        if(curClass.equals("")) return;
+        String url = "https://en.wikipedia.org/wiki/"+curClass;
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(Color.parseColor("#0099cc"));
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(MainActivity.this, Uri.parse(url));
+    }
+
     private void openUrlInput() {
         final EditText inputEditTextField = new EditText(this);
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -198,15 +222,16 @@ public class MainActivity extends AppCompatActivity {
                         String editTextInput = inputEditTextField.getText().toString();
                         Log.d("onclick", "editext value is: " + editTextInput);
 
-                        Picasso.get().load(editTextInput).into(imageView, new Callback() {
+                        Picasso.get().load(editTextInput).placeholder(R.drawable.ic_baseline_photo_24).into(imageView, new Callback() {
                             @Override
                             public void onSuccess() {
                                 ifImageAdded = true;
+                                imageView.setAlpha(1.0f);
                             }
 
                             @Override
                             public void onError(Exception e) {
-
+                                imageView.setAlpha(0.1f);
                             }
                         });
                     }
@@ -237,6 +262,9 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(MainActivity.this, "Error occured, please try again...", Toast.LENGTH_SHORT).show();
+                            status.setText("Failed");
+                            status.setTextColor(Color.parseColor("#800000"));
+                            knowMoreLink.setVisibility(View.GONE);
                         }
                     });
                     progressDialog.dismiss();
@@ -296,9 +324,12 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 int x=4;
                 if(x>confidence.length()) x=confidence.length();
+                status.setText("Successful");
+                status.setTextColor(Color.parseColor("#00cc00"));
                 classText.setText(Character.toUpperCase(curClass.charAt(0))+curClass.substring(1));
                 confidenceScore.setText(confidence.substring(0,x)+"%");
                 description.setText(Description.mDescriptionMap.get(curClass));
+                knowMoreLink.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -316,10 +347,12 @@ public class MainActivity extends AppCompatActivity {
         status = findViewById(R.id.result_tag);
         confidenceScore = findViewById(R.id.confidence_score);
         description=findViewById(R.id.description);
+        knowMoreLink=findViewById(R.id.know_more_link);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
         progressDialog.setMessage("Uploading image...");
+        progressDialog.setCancelable(false);
     }
 
     private void selectImage() {
@@ -388,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
 //            matrix.setRotate(degrees);
 //            Bitmap output=mBitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
             imageView.setImageBitmap(bitmap);
+            imageView.setAlpha(1.0f);
             imageBitmap = bitmap;
             ifImageAdded = true;
 
@@ -397,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(imageBitmap);
+                imageView.setAlpha(1.0f);
                 ifImageAdded = true;
             } catch (Exception e) {
 
