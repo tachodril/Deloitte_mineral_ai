@@ -17,9 +17,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/deloitte_icon"
+        android:icon="@drawable/deloitteimage"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/deloitte_icon"
+        android:roundIcon="@drawable/deloitteimage"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">

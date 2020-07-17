@@ -317,7 +317,9 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(json);
                             Log.e("NetworkResponse_2", obj.toString());
                             curClass = obj.getString("class");
-                            confidence = String.valueOf(obj.getDouble("confidence"));
+                            double temp = obj.getDouble("confidence");
+                            temp=temp*100;
+                            confidence = String.valueOf(temp);
                             setText();
                             //Toast.makeText(MainActivity.this, ""+curClass+" with "+confidence, Toast.LENGTH_SHORT).show();
                         } catch (UnsupportedEncodingException | JSONException e) {
@@ -340,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                int x=4;
+                int x=5;
                 if(x>confidence.length()) x=confidence.length();
                 status.setText("Successful");
                 status.setTextColor(Color.parseColor("#00cc00"));
@@ -355,8 +357,8 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         sendButton = findViewById(R.id.send_btn);
         instructions = findViewById(R.id.instructions);
-        instructions.setText("Repeat {" + "\n" + "  addPhoto();" + "\n"
-                + "  clickOnSendButton();" + "\n" + "}");
+//        instructions.setText("Repeat {" + "\n" + "  addPhoto();" + "\n"
+//                + "  clickOnSendButton();" + "\n" + "}");
         addPhoto = findViewById(R.id.card_add_photo);
         imageView = findViewById(R.id.show_image);
         addUrlText = findViewById(R.id.add_url_text);

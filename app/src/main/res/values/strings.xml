@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">DeloitteScanImage</string>
+    <string name="app_name">Deloitte Mineral Recognizer</string>
+    <string name="result"><u>RESULT</u></string>
+    <string name="knowmore">To know more, <u>click here.</u></string>
     <string name="temp_text_23">Thanks to a wide variety of open-source libraries, it is relatively easy nowadays to start exploring datasets and making some first predictions using simple Machine Learning (ML) algorithms in Python. Although, to make these trained models useful in the real world, it is necessary to share them and make them easily accessible on other users machines to make predictions. Only in this way Machine Learning can be used to provide benefit to society.</string>
     
     <string name="biotite_det">Biotite is a common group of phyllosilicate minerals within the mica group, with the approximate chemical formula K(Mg,Fe)3AlSi3O10(F,OH)2. It is primarily a solid-solution series between the iron-endmember annite, and the magnesium-endmember phlogopite; more aluminous end-members include siderophyllite and eastonite.</string>
