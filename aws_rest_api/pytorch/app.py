@@ -102,9 +102,9 @@ def predict(input_object, model):
     logger.info(f'Predicted class is {predict_class}')
     logger.info(f'Softmax confidence score is {conf_score.item()}')
     response = {}
-    response['class'] = str(predict_class)
+    response['class'] = predict_class.decode('utf-8')
     response['confidence'] = conf_score.item()
-    return str(response)
+    return response
     
 def input_fn(request_body):
     """Pre-processes the input data from JSON to PyTorch Tensor.
