@@ -6,40 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/first_layer"
+        app:cardElevation="40dp"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#0099cc">
+        android:layout_height="60dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0099cc">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
-            android:src="@drawable/ic_home_black_24dp"
-            android:tint="#fff" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:src="@drawable/deloitteimage"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Deloitte Scanner"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Deloitte Scanner"
+                android:textColor="#fff"
+                android:fontFamily="@font/notosans"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/send_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:text="Send"
-            android:textColor="#fff"
-            android:textSize="22sp" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:text="Send"
+                android:textStyle="bold"
+                android:fontFamily="@font/opensans"
+                android:textColor="#fff"
+                android:textSize="22sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:layout_below="@id/first_layer"
@@ -84,6 +91,8 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="12dp"
                             android:text="Add Photo"
+                            android:fontFamily="@font/opensans"
+                            android:textStyle="bold"
                             android:textColor="#0099cc"
                             android:textSize="18sp" />
                     </RelativeLayout>
@@ -97,6 +106,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12dp"
                     android:text="or"
+                    android:fontFamily="@font/opensans"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -109,11 +119,13 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="Add URL"
+                    android:fontFamily="@font/notosans"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/add_url_img"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_below="@+id/or_text"
@@ -135,22 +147,103 @@
             <TextView
                 android:id="@+id/instructions"
                 android:layout_width="wrap_content"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/second_layer"
                 android:layout_marginTop="18dp"
                 android:layout_toRightOf="@+id/show_image"
                 android:gravity="center_vertical"
-                android:padding="12dp"
-                android:text="Instructions here:-"
+                android:layout_marginLeft="12dp"
+                android:fontFamily="@font/notosans"
+                android:text="RESULT :"
                 android:textColor="#000"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_status"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/show_image"
+                android:layout_below="@id/instructions"
+                android:gravity="center_vertical"
+                android:text="Status - "
+                android:layout_marginLeft="12dp"
+                android:fontFamily="@font/notosans"
+                android:textColor="#000"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/result_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/instructions"
+                android:layout_toRightOf="@+id/label_status"
+                tools:text="Succesful"
+                android:layout_marginLeft="5dp"
+                android:textColor="#00cc00"
+                android:textSize="15sp"
+                android:fontFamily="@font/notosans"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_class"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/show_image"
+                android:layout_below="@id/label_status"
+                android:gravity="center_vertical"
+                android:text="Class   -"
+                android:fontFamily="@font/notosans"
+                android:layout_marginLeft="12dp"
+                android:textColor="#000"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/class_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_status"
+                android:layout_toRightOf="@+id/label_class"
+                tools:text="Chrysocolla"
+                android:textColor="#00cc00"
+                android:layout_marginLeft="5dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/opensans"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/label_confidence"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/show_image"
+                android:layout_below="@id/label_class"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/notosans"
+                android:text="Confidence Score  -"
+                android:layout_marginLeft="12dp"
+                android:textColor="#000"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/confidence_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_class"
+                android:layout_toRightOf="@+id/label_confidence"
+                android:fontFamily="@font/opensans"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                tools:text="99.85%"
+                android:textColor="#00cc00"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/show_image"
                 android:padding="12dp"
+                android:fontFamily="@font/opensans"
                 android:text="@string/temp_text_23"
                 android:textColor="#000"
                 android:textSize="18sp" />

@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">DeloitteScanImage</string>
     <string name="temp_text_23">Thanks to a wide variety of open-source libraries, it is relatively easy nowadays to start exploring datasets and making some first predictions using simple Machine Learning (ML) algorithms in Python. Although, to make these trained models useful in the real world, it is necessary to share them and make them easily accessible on other users machines to make predictions. Only in this way Machine Learning can be used to provide benefit to society.</string>
+    
+    <string name="biotite_det">Biotite is a common group of phyllosilicate minerals within the mica group, with the approximate chemical formula K(Mg,Fe)3AlSi3O10(F,OH)2. It is primarily a solid-solution series between the iron-endmember annite, and the magnesium-endmember phlogopite; more aluminous end-members include siderophyllite and eastonite.</string>
+    
+    <string name="bornite_det">Bornite, also known as peacock ore, is a sulfide mineral with chemical composition Cu5FeS4 that crystallizes in the orthorhombic system (pseudo-cubic).Bornite is an important copper ore mineral and occurs widely in porphyry copper deposits along with the more common chalcopyrite.</string>
+    
+    <string name="chrysocolla_det">Chrysocolla is a hydrated copper phyllosilicate mineral with formula: Cu2−xAlx(H2−xSi2O5)(OH)4·nH2O or (Cu,Al)2H2Si2O5(OH)4·nH2O. The structure of the mineral has been questioned, as spectrographic studies suggest material identified as chrysocolla may be a mixture of the copper hydroxide spertiniite and chalcedony.</string>
+
+    <string name="malachite_det">Malachite is a copper carbonate hydroxide mineral, with the formula Cu2CO3 (OH)2. This opaque, green-banded mineral crystallizes in the monoclinic crystal system, and most often forms botryoidal, fibrous, or stalagmitic masses, in fractures and deep, underground spaces, where the water table and hydrothermal fluids provide the means for chemical precipitation.</string>
+    
+    <string name="muscovite_det">Muscovite (also known as common mica, isinglass, or potash mica[5]) is a hydrated phyllosilicate mineral of aluminium and potassium with formula KAl2(AlSi3O10)(F,OH)2, or (KF)2(Al2O3)3(SiO2)6(H2O). It has a highly perfect basal cleavage yielding remarkably thin laminae (sheets) which are often highly elastic. </string>
+
+    <string name="pyrite_det">Pyrite is a brass-yellow mineral with a bright metallic luster. It has a chemical composition of iron sulfide (FeS2) and is the most common sulfide mineral. It forms at high and low temperatures and occurs, usually in small quantities, in igneous, metamorphic, and sedimentary rocks worldwide.</string>
+    
+    <string name="quartz_det">Quartz is a chemical compound consisting of one part silicon and two parts oxygen. Quartz is a hard, crystalline mineral composed of silicon and oxygen atoms. It is silicon dioxide (SiO2). It is the most abundant mineral found at Earth surface, and its unique properties make it one of the most useful natural substances.</string>
 </resources>

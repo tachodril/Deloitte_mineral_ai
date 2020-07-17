@@ -21,8 +21,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ import com.google.firebase.storage.UploadTask;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,22 +64,26 @@ import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView instructions, sendButton;
+    private TextView instructions, sendButton, addUrlText, classText, status, confidenceScore;
     private CardView addPhoto;
-    private ImageView imageView;
+    private ImageView imageView, addUrlImg;
+
+
     Bitmap imageBitmap;
     private Uri filePath;
     private boolean ifImageAdded = false;
     private final int PICK_IMAGE_REQUEST = 71;
     private final int CAMERA_RESULT = 1888;
     private static final int PERMISSION_REQUEST_CODE = 200;
+
     private FirebaseStorage firebaseStorage;
     private StorageReference sref;
     private StorageTask uploadTask;
+
     private String imageUrl;
     private ProgressDialog progressDialog;
-    private String curClass="-1";
-    private String confidence="-1";
+    private String curClass = "-1";
+    private String confidence = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +97,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void receiveClicks() {
+
+        addUrlText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUrlInput();
+            }
+        });
+
+        addUrlImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openUrlInput();
+            }
+        });
+
         addPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,48 +180,39 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
-//                uploadTask.continueWithTask(new Continuation() {
-//                    @Override
-//                    public Object then(@NonNull Task task) throws Exception {
-//                        if (!task.isSuccessful()) {
-//                            throw task.getException();
-//                        }
-//                        return path.getDownloadUrl();
-//                    }
-//                }).addOnCompleteListener(new OnCompleteListener() {
-//                    @Override
-//                    public void onComplete(@NonNull Task task) {
-//                        imageUrl = path.getDownloadUrl().getResult().toString();
-//                        Log.e("then: ", imageUrl);
-//                        progressDialog.dismiss();
-//                    }
-//                });
-
             }
         });
     }
 
-//    private void fetchFromApi(){
-//        JsonObject json = new JsonObject();
-//        json.addProperty("url", imageUrl);
-//
-//        Ion.with(MainActivity.this)
-//                .load("https://bp7vd1oa4m.execute-api.us-east-1.amazonaws.com/Prod/invocations/")
-//                .setJsonObjectBody(json)
-//                .asJsonObject()
-//                .setCallback(new FutureCallback<JsonObject>() {
-//                    @Override
-//                    public void onCompleted(Exception e, JsonObject result) {
-//                        // do stuff with the result or error
-//                        if(e!=null)
-//                        Log.e("onCompleted: error",e.toString());
-//                        if(result!=null)
-//                        Log.e("onCompleted: result",result.toString());
-//                    }
-//                });
-//    }
+    private void openUrlInput() {
+        final EditText inputEditTextField = new EditText(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Enter URL")
+                //.setMessage("Message")
+                .setView(inputEditTextField)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String editTextInput = inputEditTextField.getText().toString();
+                        Log.d("onclick", "editext value is: " + editTextInput);
+
+                        Picasso.get().load(editTextInput).into(imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                ifImageAdded = true;
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
+    }
 
     private void fetchFromApi() {
         try {
@@ -217,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("VOLLEY error", error.toString());
+                    progressDialog.dismiss();
                 }
             }) {
                 @Override
@@ -244,12 +259,17 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
                             String json = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-                            Log.e("NetworkResponse_new1",json);
-                            JSONObject obj=new JSONObject(json);
-                            Log.e("NetworkResponse_2",obj.toString());
+                            Log.e("NetworkResponse_new1", json);
+                            JSONObject obj = new JSONObject(json);
+                            Log.e("NetworkResponse_2", obj.toString());
+                            curClass = obj.getString("class");
+                            confidence = String.valueOf(obj.getDouble("confidence"));
+                            setText();
+                            //Toast.makeText(MainActivity.this, ""+curClass+" with "+confidence, Toast.LENGTH_SHORT).show();
                         } catch (UnsupportedEncodingException | JSONException e) {
                             e.printStackTrace();
                         }
+                        progressDialog.dismiss();
                     }
                     return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                 }
@@ -258,8 +278,20 @@ public class MainActivity extends AppCompatActivity {
             requestQueue.add(stringRequest);
         } catch (JSONException e) {
             e.printStackTrace();
+            progressDialog.dismiss();
         }
-        progressDialog.dismiss();
+    }
+
+    private void setText() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int x=4;
+                if(x>confidence.length()) x=confidence.length();
+                classText.setText(curClass);
+                confidenceScore.setText(Character.toUpperCase(confidence.charAt(0))+confidence.substring(1,x)+"%");
+            }
+        });
     }
 
     private void init() {
@@ -269,6 +301,11 @@ public class MainActivity extends AppCompatActivity {
                 + "  clickOnSendButton();" + "\n" + "}");
         addPhoto = findViewById(R.id.card_add_photo);
         imageView = findViewById(R.id.show_image);
+        addUrlText = findViewById(R.id.add_url_text);
+        addUrlImg = findViewById(R.id.add_url_img);
+        classText = findViewById(R.id.class_text);
+        status = findViewById(R.id.result_tag);
+        confidenceScore = findViewById(R.id.confidence_score);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
