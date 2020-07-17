@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 confidenceScore.setText("");
                 status.setText("");
                 knowMoreLink.setVisibility(View.GONE);
+                description.setText("");
 
                 progressDialog.show();
                 Long l = System.currentTimeMillis() / 1000;
@@ -220,6 +221,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String editTextInput = inputEditTextField.getText().toString();
+                        if(editTextInput.trim().equals("")) return;
+
+                        classText.setText("");
+                        confidenceScore.setText("");
+                        status.setText("");
+                        knowMoreLink.setVisibility(View.GONE);
+                        description.setText("");
+                        progressDialog.setMessage("Fetching image...");
+                        progressDialog.show();
+
                         Log.d("onclick", "editext value is: " + editTextInput);
 
                         Picasso.get().load(editTextInput).placeholder(R.drawable.ic_baseline_photo_24).into(imageView, new Callback() {
@@ -227,11 +238,15 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess() {
                                 ifImageAdded = true;
                                 imageView.setAlpha(1.0f);
+                                progressDialog.dismiss();
+                                progressDialog.setMessage("Uploading image...");
                             }
 
                             @Override
                             public void onError(Exception e) {
                                 imageView.setAlpha(0.1f);
+                                progressDialog.dismiss();
+                                progressDialog.setMessage("Uploading image...");
                             }
                         });
                     }
@@ -265,6 +280,9 @@ public class MainActivity extends AppCompatActivity {
                             status.setText("Failed");
                             status.setTextColor(Color.parseColor("#800000"));
                             knowMoreLink.setVisibility(View.GONE);
+                            classText.setText("");
+                            confidenceScore.setText("");
+                            description.setText("");
                         }
                     });
                     progressDialog.dismiss();
