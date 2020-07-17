@@ -64,10 +64,10 @@ import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView instructions, sendButton, addUrlText, classText, status, confidenceScore;
+    private TextView instructions, sendButton, addUrlText, classText,
+            status, confidenceScore, description;
     private CardView addPhoto;
     private ImageView imageView, addUrlImg;
-
 
     Bitmap imageBitmap;
     private Uri filePath;
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseStorage = FirebaseStorage.getInstance();
         sref = firebaseStorage.getReference("images");
+
+        Description.initMap(MainActivity.this);
         init();
         receiveClicks();
     }
@@ -231,6 +233,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("VOLLEY error", error.toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "Error occured, please try again...", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     progressDialog.dismiss();
                 }
             }) {
@@ -288,8 +296,9 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 int x=4;
                 if(x>confidence.length()) x=confidence.length();
-                classText.setText(curClass);
-                confidenceScore.setText(Character.toUpperCase(confidence.charAt(0))+confidence.substring(1,x)+"%");
+                classText.setText(Character.toUpperCase(curClass.charAt(0))+curClass.substring(1));
+                confidenceScore.setText(confidence.substring(0,x)+"%");
+                description.setText(Description.mDescriptionMap.get(curClass));
             }
         });
     }
@@ -306,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
         classText = findViewById(R.id.class_text);
         status = findViewById(R.id.result_tag);
         confidenceScore = findViewById(R.id.confidence_score);
+        description=findViewById(R.id.description);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");

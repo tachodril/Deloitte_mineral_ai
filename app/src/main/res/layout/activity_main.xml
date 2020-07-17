@@ -167,6 +167,7 @@
                 android:layout_below="@id/instructions"
                 android:gravity="center_vertical"
                 android:text="Status - "
+                android:layout_marginTop="12dp"
                 android:layout_marginLeft="12dp"
                 android:fontFamily="@font/notosans"
                 android:textColor="#000"
@@ -180,6 +181,7 @@
                 android:layout_toRightOf="@+id/label_status"
                 tools:text="Succesful"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="12dp"
                 android:textColor="#00cc00"
                 android:textSize="15sp"
                 android:fontFamily="@font/notosans"
@@ -239,12 +241,13 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/show_image"
                 android:padding="12dp"
                 android:fontFamily="@font/opensans"
-                android:text="@string/temp_text_23"
+                tools:text="@string/temp_text_23"
                 android:textColor="#000"
                 android:textSize="18sp" />
         </RelativeLayout>
