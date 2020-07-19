@@ -1,4 +1,3 @@
-# Deloitte_mineral_ai
 # Mineral Recognizer (Deloitte TechnUtsav 3.0)
 
 ## Project Architecture
