@@ -29,6 +29,7 @@ rm {app.py,requirements.txt,__init__.py}
 du -sch . 
 cd - 
 # build the .requirements.zip file
+# build layers first, then zip the file
 cd .aws-sam/build/layers/
 zip -9 -q -r ../../../layer/.requirements.zip . 
 cd -
